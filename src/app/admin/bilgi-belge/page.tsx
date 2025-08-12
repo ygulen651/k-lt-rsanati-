@@ -92,7 +92,7 @@ export default function DocumentsPage() {
   const filteredDocuments = documents.filter(doc => {
     const matchesSearch = doc.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          doc.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         doc.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()))
+                         doc.tags.some((tag: string) => tag.toLowerCase().includes(searchTerm.toLowerCase()))
     const matchesCategory = selectedCategory === 'Tümü' || doc.category === selectedCategory
     const matchesStatus = selectedStatus === 'all' || doc.status === selectedStatus
     const matchesPrivacy = showPrivate || !doc.isPrivate
@@ -431,7 +431,7 @@ export default function DocumentsPage() {
                             {doc.type.toUpperCase()}
                           </span>
                           <div className="flex flex-wrap gap-1 ml-2">
-                            {doc.tags.slice(0, 2).map(tag => (
+                            {doc.tags.slice(0, 2).map((tag: string) => (
                               <span key={tag} className="px-2 py-1 text-xs bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300 rounded">
                                 #{tag}
                               </span>

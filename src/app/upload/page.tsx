@@ -7,10 +7,10 @@ import { Container } from "@/components/Container"
 import { UploadWidget } from "@/components/UploadWidget"
 
 interface UploadPageProps {
-  searchParams: { key?: string }
+  searchParams: Promise<{ key?: string }>
 }
 
-function UploadContent({ searchParams }: UploadPageProps) {
+function UploadContent({ searchParams }: { searchParams: { key?: string } }) {
   const providedKey = searchParams.key
   const expectedKey = process.env.NEXT_PUBLIC_UPLOAD_KEY
 
@@ -94,10 +94,12 @@ function UploadContent({ searchParams }: UploadPageProps) {
   )
 }
 
-export default function UploadPage({ searchParams }: UploadPageProps) {
+export default async function UploadPage({ searchParams }: UploadPageProps) {
+  const resolvedSearchParams = await searchParams
+  
   return (
     <Suspense fallback={<div>Yükleniyor...</div>}>
-      <UploadContent searchParams={searchParams} />
+      <UploadContent searchParams={resolvedSearchParams} />
     </Suspense>
   )
 }

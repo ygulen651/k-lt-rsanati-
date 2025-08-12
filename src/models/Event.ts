@@ -139,7 +139,8 @@ EventSchema.index({ createdAt: -1 })
 // Slug otomatik oluşturma
 EventSchema.pre('save', function(next) {
   if (this.isModified('title') && !this.slug) {
-    this.slug = this.title
+    const doc = this as any
+    doc.slug = doc.title
       .toLowerCase()
       .replace(/[^a-z0-9\s-]/g, '') // Özel karakterleri kaldır
       .replace(/\s+/g, '-') // Boşlukları tire ile değiştir
@@ -151,7 +152,8 @@ EventSchema.pre('save', function(next) {
 
 // Katılımcı sayısı kontrolü
 EventSchema.pre('save', function(next) {
-  if (this.maxParticipants && this.currentParticipants > this.maxParticipants) {
+  const doc = this as any
+  if (doc.maxParticipants && doc.currentParticipants > doc.maxParticipants) {
     next(new Error('Mevcut katılımcı sayısı maksimum katılımcı sayısını aşamaz'))
   }
   next()

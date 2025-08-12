@@ -151,6 +151,7 @@ export async function DELETE(
 
     await connectDB()
 
+    const { id } = await params
     const deletedUser = await AdminUser.findByIdAndDelete(id)
 
     if (!deletedUser) {

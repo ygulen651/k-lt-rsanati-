@@ -102,8 +102,8 @@ export default function UyelikBasvurulariPage() {
         const result = await response.json()
         
         // Listeyi güncelle
-        setApplications(prev => prev.map(app => 
-          app._id === id ? { ...app, status, reviewNotes: notes, reviewedAt: new Date().toISOString() } : app
+                setApplications(prev => prev.map(app =>
+          app._id === id ? { ...app, status: status as "pending" | "under_review" | "approved" | "rejected", reviewNotes: notes, reviewedAt: new Date().toISOString() } : app
         ))
 
         // Modal'ı kapat

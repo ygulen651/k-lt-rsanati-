@@ -36,7 +36,7 @@ async function getDocuments() {
 
 export default async function BilgiBelgePage() {
   const documents = await getDocuments()
-  const categories = Array.from(new Set(documents.map((doc: any) => doc.category)))
+  const categories = Array.from(new Set(documents.map((doc: any) => doc.category))) as string[]
   
   // Featured belgeleri ayır (admin panelinde işaretlenenler veya önemli kategoriler)
   const featuredDocs = documents.filter((doc: any) => 
@@ -64,8 +64,8 @@ export default async function BilgiBelgePage() {
             <Badge variant="default" className="cursor-pointer">
               Tümü
             </Badge>
-            {categories.map((category) => (
-              <Badge key={category} variant="outline" className="cursor-pointer hover:bg-primary hover:text-primary-foreground">
+            {categories.map((category, index) => (
+              <Badge key={`${category}-${index}`} variant="outline" className="cursor-pointer hover:bg-primary hover:text-primary-foreground">
                 {category}
               </Badge>
             ))}

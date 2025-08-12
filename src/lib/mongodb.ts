@@ -17,30 +17,30 @@ if (!cached) {
 }
 
 async function connectDB() {
-  if (cached.conn) {
+  if (cached?.conn) {
     return cached.conn
   }
 
-  if (!cached.promise) {
+  if (!cached?.promise) {
     const opts = {
       bufferCommands: false,
     }
 
-    cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
+    cached!.promise = mongoose.connect(MONGODB_URI, opts).then(() => {
       console.log('MongoDB bağlantısı başarılı')
       return mongoose
     })
   }
 
   try {
-    cached.conn = await cached.promise
+    cached!.conn = await cached!.promise
   } catch (e) {
-    cached.promise = null
+    cached!.promise = null
     console.error('MongoDB bağlantı hatası:', e)
     throw e
   }
 
-  return cached.conn
+  return cached!.conn
 }
 
 export { connectDB }
@@ -49,7 +49,7 @@ export default connectDB
 // Global type tanımı
 declare global {
   var mongoose: {
-    conn: typeof mongoose | null
-    promise: Promise<typeof mongoose> | null
-  }
+    conn: any | null
+    promise: Promise<any> | null
+  } | undefined
 }

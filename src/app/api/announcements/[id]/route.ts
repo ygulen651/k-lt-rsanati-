@@ -61,7 +61,8 @@ export async function PUT(
     }
     
     // Mevcut duyuruyu bul
-    const existingAnnouncement = await Announcement.findById(params.id)
+    const { id } = await params
+    const existingAnnouncement = await Announcement.findById(id)
     
     if (!existingAnnouncement) {
       return NextResponse.json(
@@ -85,8 +86,6 @@ export async function PUT(
         .replace(/\s+/g, '-')
         .replace(/-+/g, '-')
         .trim()
-      
-      const { id } = await params
       
       // Benzersiz slug kontrolü (mevcut duyuru hariç)
       let counter = 1

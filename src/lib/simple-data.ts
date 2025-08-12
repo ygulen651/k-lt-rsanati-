@@ -1,7 +1,7 @@
 // Basit veri yönetimi - gerçek zamanlı çalışan sistem
 
 // Memory'de veri tutacağız (geliştirme için)
-let announcements: any[] = [
+const announcements: Record<string, any>[] = [
   {
     id: '1',
     title: 'Örnek Duyuru 1',
@@ -34,7 +34,7 @@ let announcements: any[] = [
   }
 ]
 
-let events: any[] = [
+const events: Record<string, any>[] = [
   {
     id: '1',
     title: 'Örnek Etkinlik',
@@ -70,7 +70,7 @@ export const AnnouncementManager = {
   
   getById: (id: string) => announcements.find(a => a.id === id),
   
-  add: (data: any) => {
+  add: (data: Record<string, any>) => {
     try {
       const newAnnouncement = {
         id: Date.now().toString(),
@@ -87,7 +87,7 @@ export const AnnouncementManager = {
     }
   },
   
-  update: (id: string, data: any) => {
+  update: (id: string, data: Record<string, any>) => {
     try {
       const index = announcements.findIndex(a => a.id === id)
       if (index !== -1) {
@@ -135,7 +135,7 @@ export const EventManager = {
     return events.filter(e => new Date(e.date) >= now && e.status === 'published')
   },
   
-  add: (data: any) => {
+  add: (data: Record<string, any>) => {
     try {
       const newEvent = {
         id: Date.now().toString(),
@@ -151,7 +151,7 @@ export const EventManager = {
     }
   },
   
-  update: (id: string, data: any) => {
+  update: (id: string, data: Record<string, any>) => {
     try {
       const index = events.findIndex(e => e.id === id)
       if (index !== -1) {
@@ -186,7 +186,7 @@ export const EventManager = {
 export const SiteDataManager = {
   get: () => siteData,
   
-  update: (section: string, data: any) => {
+  update: (section: string, data: Record<string, any>) => {
     try {
       if (siteData[section as keyof typeof siteData]) {
         siteData[section as keyof typeof siteData] = { 
@@ -203,7 +203,7 @@ export const SiteDataManager = {
     }
   },
   
-  updateAll: (data: any) => {
+  updateAll: (data: Record<string, any>) => {
     try {
       siteData = { ...siteData, ...data }
       console.log('Tüm site verisi güncellendi')

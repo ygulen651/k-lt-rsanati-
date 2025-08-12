@@ -4,13 +4,21 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Save, ArrowLeft } from 'lucide-react'
 
-export default function DuzenleKulturSanatIs({ params }: { params: { slug: string } }) {
+export default function DuzenleKulturSanatIs({ params }: { params: Promise<{ slug: string }> }) {
   const router = useRouter()
-  const { slug } = params
+  const [slug, setSlug] = useState<string>('')
   const [loading, setLoading] = useState(true)
   const [form, setForm] = useState<any>(null)
 
-  useEffect(() => { load() }, [])
+  useEffect(() => {
+    params.then(p => {
+      setSlug(p.slug)
+    })
+  }, [params])
+
+  useEffect(() => {
+    if (slug) load()
+  }, [slug])
 
   async function load() {
     try {
@@ -45,7 +53,7 @@ export default function DuzenleKulturSanatIs({ params }: { params: { slug: strin
     if (res.ok && json.success) { alert('Kaydedildi'); router.push('/admin/kultur-sanat-is') } else alert(json.message || 'Hata')
   }
 
-  if (loading || !form) return <div>Yükleniyor…</div>
+  if (loading || !form || !slug) return <div>Yükleniyor…</div>
 
   return (
     <div className="space-y-6">

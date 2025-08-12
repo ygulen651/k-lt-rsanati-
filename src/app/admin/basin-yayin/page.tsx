@@ -236,7 +236,7 @@ export default function PressPage() {
           <div className="sm:w-48">
             <select
               value={selectedType}
-              onChange={(e) => setSelectedType(e.target.value)}
+              onChange={(e) => setSelectedType(e.target.value as "tv" | "radio" | "newspaper" | "online" | "all")}
               className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
             >
               <option value="all">Tüm Medya Tipleri</option>
@@ -272,7 +272,7 @@ export default function PressPage() {
         {filteredItems.map((item) => {
           const IconComponent = typeIcons[item.type as keyof typeof typeIcons]
           return (
-            <div key={item.id} className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow">
+            <div key={item._id} className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow">
               {/* Header */}
               <div className="relative">
                 <img 

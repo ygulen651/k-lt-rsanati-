@@ -56,17 +56,19 @@ UserSchema.pre('save', async function(next) {
   if (!this.isModified('password')) return next()
   
   try {
+    const doc = this as any
     const salt = await bcrypt.genSalt(12)
-    this.password = await bcrypt.hash(this.password, salt)
+    doc.password = await bcrypt.hash(doc.password, salt)
     next()
-  } catch (error: any) {
-    next(error)
+  } catch (error: unknown) {
+    next(error as Error)
   }
 })
 
 // Şifre karşılaştırma metodu
 UserSchema.methods.comparePassword = async function(candidatePassword: string): Promise<boolean> {
-  return bcrypt.compare(candidatePassword, this.password)
+  const doc = this as any
+  return bcrypt.compare(candidatePassword, doc.password)
 }
 
 // Index'ler
