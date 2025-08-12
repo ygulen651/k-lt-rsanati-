@@ -13,8 +13,8 @@ const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/sendik
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'admin@sendika.com'
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123'
 
-// User Schema
-const UserSchema = new mongoose.Schema({
+// AdminUser Schema
+const AdminUserSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
@@ -46,7 +46,7 @@ const UserSchema = new mongoose.Schema({
   timestamps: true
 })
 
-const User = mongoose.model('User', UserSchema)
+const AdminUser = mongoose.model('AdminUser', AdminUserSchema)
 
 async function setupDatabase() {
   try {
@@ -61,7 +61,7 @@ async function setupDatabase() {
 
     // Mevcut admin kullanıcı var mı kontrol et
     console.log('👤 Mevcut admin kullanıcı kontrol ediliyor...')
-    const existingAdmin = await User.findOne({ role: 'admin' })
+    const existingAdmin = await AdminUser.findOne({ role: 'admin' })
     
     if (existingAdmin) {
       console.log('⚠️  Admin kullanıcı zaten mevcut:', existingAdmin.email)
@@ -78,7 +78,7 @@ async function setupDatabase() {
     const salt = await bcrypt.genSalt(12)
     const hashedPassword = await bcrypt.hash(ADMIN_PASSWORD, salt)
     
-    const adminUser = new User({
+    const adminUser = new AdminUser({
       email: ADMIN_EMAIL,
       password: hashedPassword,
       name: 'Sistem Yöneticisi',
