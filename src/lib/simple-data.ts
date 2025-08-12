@@ -79,7 +79,7 @@ export const AnnouncementManager = {
         updatedAt: new Date().toISOString()
       }
       announcements.unshift(newAnnouncement) // En başa ekle
-      console.log('Yeni duyuru eklendi:', newAnnouncement.title)
+      console.log('Yeni duyuru eklendi:', (newAnnouncement as any).title)
       return true
     } catch (error) {
       console.error('Duyuru ekleme hatası:', error)
@@ -96,7 +96,7 @@ export const AnnouncementManager = {
           ...data,
           updatedAt: new Date().toISOString()
         }
-        console.log('Duyuru güncellendi:', announcements[index].title)
+        console.log('Duyuru güncellendi:', (announcements[index] as any).title)
         return true
       }
       return false
@@ -111,7 +111,7 @@ export const AnnouncementManager = {
       const index = announcements.findIndex(a => a.id === id)
       if (index !== -1) {
         const deleted = announcements.splice(index, 1)[0]
-        console.log('Duyuru silindi:', deleted.title)
+        console.log('Duyuru silindi:', (deleted as any).title)
         return true
       }
       return false
@@ -143,7 +143,7 @@ export const EventManager = {
         createdAt: new Date().toISOString()
       }
       events.unshift(newEvent)
-      console.log('Yeni etkinlik eklendi:', newEvent.title)
+      console.log('Yeni etkinlik eklendi:', (newEvent as any).title)
       return true
     } catch (error) {
       console.error('Etkinlik ekleme hatası:', error)
@@ -156,7 +156,7 @@ export const EventManager = {
       const index = events.findIndex(e => e.id === id)
       if (index !== -1) {
         events[index] = { ...events[index], ...data }
-        console.log('Etkinlik güncellendi:', events[index].title)
+        console.log('Etkinlik güncellendi:', (events[index] as any).title)
         return true
       }
       return false
@@ -171,7 +171,7 @@ export const EventManager = {
       const index = events.findIndex(e => e.id === id)
       if (index !== -1) {
         const deleted = events.splice(index, 1)[0]
-        console.log('Etkinlik silindi:', deleted.title)
+        console.log('Etkinlik silindi:', (deleted as any).title)
         return true
       }
       return false
@@ -189,7 +189,7 @@ export const SiteDataManager = {
   update: (section: string, data: Record<string, any>) => {
     try {
       if (siteData[section as keyof typeof siteData]) {
-        siteData[section as keyof typeof siteData] = { 
+        (siteData as any)[section] = { 
           ...siteData[section as keyof typeof siteData], 
           ...data 
         }

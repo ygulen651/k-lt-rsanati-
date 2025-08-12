@@ -85,6 +85,7 @@ export async function PUT(
       updateData.password = await bcrypt.hash(updateData.password, 12)
     }
 
+    const { id } = await params
     const updatedUser = await AdminUser.findByIdAndUpdate(
       id,
       updateData,
