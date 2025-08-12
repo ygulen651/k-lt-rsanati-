@@ -1,0 +1,81 @@
+{
+  "categories": [
+    {
+      "id": "etkinlikler",
+      "name": "Etkinlikler",
+      "description": "Sendika etkinliklerinden kareler",
+      "images": [
+        {
+          "id": "1-mayis-2024-1",
+          "url": "https://res.cloudinary.com/demo/image/upload/v1640995392/cld-sample.jpg",
+          "title": "1 Mayıs 2024 Kutlaması",
+          "description": "Taksim Meydanı'nda düzenlenen 1 Mayıs kutlamasından kareler",
+          "date": "2024-05-01",
+          "tags": ["1 mayıs", "kutlama", "taksim"]
+        },
+        {
+          "id": "1-mayis-2024-2",
+          "url": "https://res.cloudinary.com/demo/image/upload/v1640995392/cld-sample-2.jpg",
+          "title": "1 Mayıs Yürüyüşü",
+          "description": "Şişli'den Taksim'e yürüyüş anları",
+          "date": "2024-05-01",
+          "tags": ["1 mayıs", "yürüyüş", "dayanışma"]
+        },
+        {
+          "id": "genel-kurul-2024",
+          "url": "https://res.cloudinary.com/demo/image/upload/v1640995392/cld-sample-3.jpg",
+          "title": "2024 Genel Kurul Toplantısı",
+          "description": "Yıllık genel kurul toplantısından görüntüler",
+          "date": "2024-03-15",
+          "tags": ["genel kurul", "toplantı", "demokrasi"]
+        }
+      ]
+    },
+    {
+      "id": "egitimler",
+      "name": "Eğitimler",
+      "description": "Eğitim ve seminer faaliyetleri",
+      "images": [
+        {
+          "id": "hukuk-semineri-1",
+          "url": "https://res.cloudinary.com/demo/image/upload/v1640995392/cld-sample-4.jpg",
+          "title": "Çalışan Hakları Semineri",
+          "description": "Hukuk uzmanlarının verdiği çalışan hakları semineri",
+          "date": "2024-06-15",
+          "tags": ["eğitim", "hukuk", "çalışan hakları"]
+        },
+        {
+          "id": "liderlik-egitimi",
+          "url": "https://res.cloudinary.com/demo/image/upload/v1640995392/cld-sample-5.jpg",
+          "title": "Liderlik Geliştirme Eğitimi",
+          "description": "Genç sendikacılar için liderlik geliştirme programı",
+          "date": "2024-07-20",
+          "tags": ["liderlik", "gençlik", "gelişim"]
+        }
+      ]
+    },
+    {
+      "id": "sosyal",
+      "name": "Sosyal Etkinlikler",
+      "description": "Sosyal ve kültürel etkinlikler",
+      "images": [
+        {
+          "id": "piknik-2024",
+          "url": "https://res.cloudinary.com/demo/image/upload/v1640995392/cld-sample.jpg",
+          "title": "Yaz Pikniği 2024",
+          "description": "Üyelerimiz ve aileleri için düzenlenen yaz pikniği",
+          "date": "2024-08-10",
+          "tags": ["piknik", "aile", "sosyal"]
+        },
+        {
+          "id": "yilbasi-2024",
+          "url": "https://res.cloudinary.com/demo/image/upload/v1640995392/cld-sample-2.jpg",
+          "title": "Yılbaşı Kutlaması",
+          "description": "2024 yılbaşı kutlama etkinliği",
+          "date": "2023-12-31",
+          "tags": ["yılbaşı", "kutlama", "eğlence"]
+        }
+      ]
+    }
+  ]
+}

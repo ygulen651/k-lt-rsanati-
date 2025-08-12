@@ -1,0 +1,134 @@
+{
+  "hero": {
+    "slides": [
+      {
+        "id": 1,
+        "title": "",
+        "subtitle": "",
+        "image": "/hero-bg.jpg",
+        "buttonText": "Hakkımızda",
+        "buttonLink": "/hakkimizda",
+        "active": true
+      }
+    ]
+  },
+  "mission": {
+    "mission": "a",
+    "vision": "a",
+    "values": "a"
+  },
+  "settings": {
+    "siteTitle": "Kültür Sanat İş",
+    "siteDescription": "",
+    "logo": "/kultur.png",
+    "favicon": "/kültür.png",
+    "primaryColor": "#dc2626",
+    "secondaryColor": "#1f2937",
+    "contactEmail": "info@kultursanatis.org",
+    "contactPhone": "0312-419 85 79",
+    "address": "Şehit Adem Yavuz Sokak. Hitit Apt. No:14/14 Kızılay / ANKARA",
+    "socialMedia": {
+      "facebook": "https://facebook.com/sendika",
+      "twitter": "https://twitter.com/sendika",
+      "instagram": "https://instagram.com/sendika",
+      "linkedin": "https://linkedin.com/company/sendika"
+    },
+    "siteName": "Kültür-İş",
+    "fax": "0312-419 85 79"
+  },
+  "theme": {
+    "primaryColor": "#dc2626",
+    "secondaryColor": "#2563eb",
+    "accentColor": "#7c3aed",
+    "backgroundColor": "#ffffff",
+    "textColor": "#1f2937",
+    "fontFamily": "Inter",
+    "logoUrl": "/kultur.png",
+    "customCss": ""
+  },
+  "menu": [
+    {
+      "id": 3,
+      "title": "Basın Yayın",
+      "url": "/basin-yayin",
+      "order": 3,
+      "visible": true,
+      "target": "_self"
+    },
+    {
+      "id": 4,
+      "title": "Etkinlikler",
+      "url": "/etkinlikler",
+      "order": 4,
+      "visible": true,
+      "target": "_self"
+    },
+    {
+      "id": 5,
+      "title": "İletişim",
+      "url": "/iletisim",
+      "order": 5,
+      "visible": true,
+      "target": "_self"
+    }
+  ],
+  "socials": [
+    {
+      "id": 1,
+      "name": "Facebook",
+      "url": "https://www.facebook.com/profile.php?id=61579195440023",
+      "icon": "facebook",
+      "active": true
+    },
+    {
+      "id": 2,
+      "name": "Twitter",
+      "url": "https://x.com/Sanat_is",
+      "icon": "twitter",
+      "active": true
+    },
+    {
+      "id": 3,
+      "name": "Instagram",
+      "url": "https://www.facebook.com/profile.php?id=61579195440023",
+      "icon": "instagram",
+      "active": true
+    }
+  ],
+  "seo": {
+    "siteTitle": "Kültür Sanat İş",
+    "siteDescription": "Kültür Sanat İş",
+    "keywords": "sendika, kültür, bilim, işçi, kamu, çalışan",
+    "robots": "index, follow",
+    "canonicalUrl": "",
+    "ogTitle": "Kültür Sanat İş",
+    "ogDescription": "",
+    "ogImage": "/og-image.jpg",
+    "twitterCard": "summary_large_image",
+    "twitterSite": "@kultursanatis",
+    "googleAnalytics": "",
+    "googleSearchConsole": "",
+    "structuredData": true,
+    "sitemap": true,
+    "robotsTxt": true
+  },
+  "contact": {
+    "email": "info@kultursanatis.org",
+    "phone": "0312-419 85 79",
+    "fax": "0312-419 85 79",
+    "address": "Şehit Adem Yavuz Sokak. Hitit Apt. No:14/14",
+    "district": "Kızılay",
+    "city": "ANKARA",
+    "postalCode": "06420",
+    "workingHours": "Pazartesi - Cuma: 09:00 - 18:00",
+    "mapUrl": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3059.6234567890123!2d32.8597!3d39.9208"
+  },
+  "analytics": {
+    "visitors": 0,
+    "pageViews": 0,
+    "bounceRate": 0,
+    "avgSessionDuration": 0,
+    "topPages": [],
+    "topSources": []
+  }
+}
