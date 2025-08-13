@@ -6,8 +6,12 @@ import { Calendar, Clock, MapPin, ArrowLeft } from 'lucide-react'
 
 async function getEvent(slug: string) {
   try {
-    // Relative URL kullan - hem local hem Vercel'de çalışır
-    const res = await fetch(`/api/events?slug=${encodeURIComponent(slug)}`, { cache: 'no-store' })
+    // Server-side için environment variable kullan
+    const baseUrl = process.env.VERCEL_URL 
+      ? `https://${process.env.VERCEL_URL}` 
+      : process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
+    
+    const res = await fetch(`${baseUrl}/api/events?slug=${encodeURIComponent(slug)}`, { cache: 'no-store' })
     const json = await res.json()
     const items = json.success ? json.data : []
     return Array.isArray(items) ? items[0] : null
