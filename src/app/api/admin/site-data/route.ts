@@ -1,121 +1,42 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { authenticate, requireEditor } from '@/lib/auth'
-import fs from 'fs'
-import path from 'path'
-
-const STORAGE = path.join(process.cwd(), 'data', 'site-data.json')
-
-function defaultSiteData() {
-  return {
-    hero: { 
-      slides: [
-        {
-          id: 1,
-          title: "Kültür ve Bilim İşçileri Sendikası",
-          subtitle: "",
-          image: "/hero-bg.jpg",
-          buttonText: "Hakkımızda",
-          buttonLink: "/hakkimizda",
-          active: true
-        }
-      ]
-    },
-    mission: {
-      mission: "Kamu çalışanlarının haklarını korumak, sosyal ve ekonomik durumlarını iyileştirmek, demokratik ve laik cumhuriyeti desteklemek.",
-      vision: "Türkiye'nin en güçlü ve etkili kamu sendikası olmak, çalışanların sesini en yüksek perdeden duyurmak.",
-      values: "Adalet, eşitlik, dayanışma, şeffaflık ve demokratik katılım ilkelerimizle hareket ediyoruz."
-    },
-    settings: {
-      siteName: "Kültür-İş",
-      siteTitle: "Kültür ve Bilim İşçileri Sendikası",
-      siteDescription: "",
-      logo: "/Logo-png-beyaz.png",
-      favicon: "/kültür.png",
-      contactEmail: 'info@kultursanatis.org',
-      contactPhone: '0312-419 85 79',
-      fax: '0312-419 85 79',
-      address: 'Şehit Adem Yavuz Sokak. Hitit Apt. No:14/14 Kızılay / ANKARA'
-    },
-    theme: {
-      primaryColor: '#dc2626',
-      secondaryColor: '#2563eb',
-      accentColor: '#7c3aed',
-      backgroundColor: '#ffffff',
-      textColor: '#1f2937',
-      fontFamily: 'Inter',
-      logoUrl: '/Logo-png-beyaz.png',
-      customCss: ''
-    },
-    menu: [
-      { id: 1, title: "Ana Sayfa", url: "/", order: 1, visible: true, target: "_self" },
-      { id: 2, title: "Hakkımızda", url: "/hakkimizda", order: 2, visible: true, target: "_self" },
-      { id: 3, title: "Basın Yayın", url: "/basin-yayin", order: 3, visible: true, target: "_self" },
-      { id: 4, title: "Etkinlikler", url: "/etkinlikler", order: 4, visible: true, target: "_self" },
-      { id: 5, title: "İletişim", url: "/iletisim", order: 5, visible: true, target: "_self" }
-    ],
-    socials: [
-      { id: 1, name: "Facebook", url: "https://facebook.com/kultursanatis", icon: "facebook", active: true },
-      { id: 2, name: "Twitter", url: "https://twitter.com/kultursanatis", icon: "twitter", active: true },
-      { id: 3, name: "Instagram", url: "https://instagram.com/kultursanatis", icon: "instagram", active: true },
-      { id: 4, name: "YouTube", url: "https://youtube.com/kultursanatis", icon: "youtube", active: true }
-    ],
-    seo: {
-      siteTitle: 'Kültür-İş',
-      siteDescription: 'Kültür ve Bilim İşçileri Sendikası',
-      keywords: 'sendika, kültür, bilim, işçi, kamu, çalışan',
-      robots: 'index, follow',
-      canonicalUrl: '',
-      ogTitle: 'Kültür-İş - Kültür ve Bilim İşçileri Sendikası',
-      ogDescription: '',
-      ogImage: '/og-image.jpg',
-      twitterCard: 'summary_large_image',
-      twitterSite: '@kultursanatis',
-      googleAnalytics: '',
-      googleSearchConsole: '',
-      structuredData: true,
-      sitemap: true,
-      robotsTxt: true
-    },
-    contact: {
-      email: 'info@kultursanatis.org',
-      phone: '0312-419 85 79',
-      fax: '0312-419 85 79',
-      address: 'Şehit Adem Yavuz Sokak. Hitit Apt. No:14/14',
-      district: 'Kızılay',
-      city: 'ANKARA',
-      postalCode: '06420',
-      workingHours: 'Pazartesi - Cuma: 09:00 - 18:00',
-      mapUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3059.6234567890123!2d32.8597!3d39.9208'
-    },
-    analytics: {
-      visitors: 0,
-      pageViews: 0,
-      bounceRate: 0,
-      avgSessionDuration: 0,
-      topPages: [],
-      topSources: []
-    }
-  }
-}
+import { connectDB } from '@/lib/mongodb'
+import SiteData, { defaultSiteData } from '@/models/SiteData'
 
 export async function GET(request: NextRequest) {
   try {
-    let siteData = defaultSiteData()
-    if (fs.existsSync(STORAGE)) {
-      try {
-        const raw = fs.readFileSync(STORAGE, 'utf8')
-        const parsed = JSON.parse(raw)
-        siteData = { ...siteData, ...parsed }
-      } catch {}
-    }
-    return NextResponse.json({ success: true, data: siteData })
+    // MongoDB'ye bağlan
+    await connectDB()
+    
+    // Tüm site data'yı getir
+    const siteDataSections = await SiteData.find({}).lean()
+    
+    // Default data ile birleştir
+    let siteData = { ...defaultSiteData }
+    
+    // MongoDB'den gelen verileri merge et
+    siteDataSections.forEach((section: any) => {
+      if (section.section && section.data) {
+        (siteData as any)[section.section] = section.data
+      }
+    })
+    
+    return NextResponse.json({ 
+      success: true, 
+      data: siteData,
+      source: 'mongodb'
+    })
     
   } catch (error: any) {
-    console.error('Site data error:', error)
-    return NextResponse.json(
-      { success: false, message: 'Site verileri alınamadı', error: error.message },
-      { status: 500 }
-    )
+    console.error('❌ Site data error:', error)
+    
+    // Hata durumunda default data döndür
+    return NextResponse.json({ 
+      success: true, 
+      data: defaultSiteData,
+      source: 'default',
+      warning: 'MongoDB bağlantısı başarısız, default veriler kullanılıyor'
+    })
   }
 }
 
@@ -124,7 +45,7 @@ export async function PUT(request: NextRequest) {
     // Kimlik doğrulama
     const user = await authenticate(request)
     if (!user || !requireEditor(user)) {
-      console.log('Yetkisiz erişim denemesi')
+      console.log('❌ Yetkisiz erişim denemesi')
       return NextResponse.json(
         { success: false, message: 'Yetkisiz erişim' },
         { status: 401 }
@@ -136,42 +57,130 @@ export async function PUT(request: NextRequest) {
       data: any
     }
     
-    console.log('PUT request - section:', body.section)
-    console.log('PUT request - data:', body.data)
+    console.log('📝 PUT request - section:', body.section)
+    console.log('📝 PUT request - data:', body.data)
     
-    // Dosyaya kaydet
-    let current = defaultSiteData()
-    if (fs.existsSync(STORAGE)) {
-      try { 
-        const fileContent = fs.readFileSync(STORAGE, 'utf8')
-        current = { ...current, ...JSON.parse(fileContent) }
-        console.log('Mevcut dosya içeriği okundu')
-      } catch (e) {
-        console.log('Dosya okuma hatası:', e)
+    // MongoDB'ye bağlan
+    await connectDB()
+    
+    // Upsert operation - section yoksa oluştur, varsa güncelle
+    const result = await SiteData.findOneAndUpdate(
+      { section: body.section },
+      { 
+        section: body.section,
+        data: body.data,
+        updatedBy: user.id,
+        updatedAt: new Date()
+      },
+      { 
+        upsert: true, 
+        new: true,
+        setDefaultsOnInsert: true
       }
-    } else {
-      console.log('Site data dosyası mevcut değil, yeni oluşturuluyor')
-    }
+    )
     
-    ;(current as any)[body.section] = body.data
-    console.log('Güncellenecek section:', body.section)
-    console.log('Güncellenecek data:', body.data)
+    console.log('✅ Site data başarıyla güncellendi:', body.section)
     
-    const dir = path.dirname(STORAGE)
-    if (!fs.existsSync(dir)) {
-      fs.mkdirSync(dir, { recursive: true })
-      console.log('Data dizini oluşturuldu')
-    }
-    
-    fs.writeFileSync(STORAGE, JSON.stringify(current, null, 2), 'utf8')
-    console.log('Dosya başarıyla kaydedildi')
-    
-    return NextResponse.json({ success: true, data: (current as any)[body.section] })
+    return NextResponse.json({ 
+      success: true, 
+      data: result.data,
+      message: `${body.section} bölümü başarıyla güncellendi`
+    })
     
   } catch (error: any) {
-    console.error('Site data update error:', error)
+    console.error('❌ Site data update error:', error)
+    
+    // MongoDB bağlantı hatası durumunda
+    if (error.name === 'MongoNetworkError' || error.name === 'MongoServerSelectionError') {
+      return NextResponse.json(
+        { 
+          success: false, 
+          message: 'Veritabanı bağlantısı kurulamadı. Lütfen daha sonra tekrar deneyin.',
+          error: 'Database connection failed'
+        },
+        { status: 503 }
+      )
+    }
+    
     return NextResponse.json(
-      { success: false, message: 'Site ayarları güncellenemedi', error: error.message },
+      { 
+        success: false, 
+        message: 'Site ayarları güncellenemedi', 
+        error: error.message 
+      },
+      { status: 500 }
+    )
+  }
+}
+
+// POST method for bulk operations
+export async function POST(request: NextRequest) {
+  try {
+    // Kimlik doğrulama
+    const user = await authenticate(request)
+    if (!user || !requireEditor(user)) {
+      return NextResponse.json(
+        { success: false, message: 'Yetkisiz erişim' },
+        { status: 401 }
+      )
+    }
+    
+    const body = await request.json() as {
+      action: 'initialize' | 'reset' | 'backup'
+    }
+    
+    // MongoDB'ye bağlan
+    await connectDB()
+    
+    if (body.action === 'initialize') {
+      // İlk kurulum - tüm default data'yı MongoDB'ye ekle
+      const sections = Object.keys(defaultSiteData) as Array<keyof typeof defaultSiteData>
+      
+      for (const section of sections) {
+        await SiteData.findOneAndUpdate(
+          { section },
+          { 
+            section,
+            data: (defaultSiteData as any)[section],
+            updatedBy: user.id
+          },
+          { upsert: true, new: true }
+        )
+      }
+      
+      console.log('✅ Site data başarıyla initialize edildi')
+      
+      return NextResponse.json({ 
+        success: true, 
+        message: 'Site data başarıyla initialize edildi'
+      })
+    }
+    
+    if (body.action === 'reset') {
+      // Tüm site data'yı sıfırla
+      await SiteData.deleteMany({})
+      
+      console.log('✅ Site data başarıyla sıfırlandı')
+      
+      return NextResponse.json({ 
+        success: true, 
+        message: 'Site data başarıyla sıfırlandı'
+      })
+    }
+    
+    return NextResponse.json(
+      { success: false, message: 'Geçersiz action' },
+      { status: 400 }
+    )
+    
+  } catch (error: any) {
+    console.error('❌ Site data action error:', error)
+    return NextResponse.json(
+      { 
+        success: false, 
+        message: 'İşlem başarısız', 
+        error: error.message 
+      },
       { status: 500 }
     )
   }

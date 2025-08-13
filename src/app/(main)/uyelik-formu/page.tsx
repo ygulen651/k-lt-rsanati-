@@ -17,7 +17,7 @@ export default function UyelikFormuPage() {
             </p>
             <div className="flex justify-center">
               <Button size="lg" asChild>
-                <a href="/documents/uyelik-formu.pdf" download="Kultur-Sanat-Is-Uyelik-Formu.pdf">
+                <a href="/documents/uyelik-formu.pdf" download="Birlik-Sen-Uyelik-Formu.pdf">
                   <Download className="h-4 w-4 mr-2" />
                   PDF Formu İndir
                 </a>

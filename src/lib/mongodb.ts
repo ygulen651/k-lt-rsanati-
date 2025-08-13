@@ -8,7 +8,7 @@ if (!MONGODB_URI) {
 
 /**
  * Global MongoDB bağlantısı
- * Development modunda hot reload sırasında bağlantıları önbelleğe alır
+ * Vercel'de serverless functions için optimize edildi
  */
 let cached = global.mongoose
 
@@ -24,11 +24,24 @@ async function connectDB() {
   if (!cached.promise) {
     const opts = {
       bufferCommands: false,
+      // Vercel'de connection pooling için
+      maxPoolSize: 10,
+      serverSelectionTimeoutMS: 5000,
+      socketTimeoutMS: 45000,
+      // Vercel'de connection timeout
+      connectTimeoutMS: 10000,
+      // Vercel'de retry logic
+      retryWrites: true,
+      w: 'majority'
     }
 
     cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
-      console.log('MongoDB bağlantısı başarılı')
+      console.log('✅ MongoDB bağlantısı başarılı')
       return mongoose
+    }).catch((error) => {
+      console.error('❌ MongoDB bağlantı hatası:', error)
+      cached.promise = null
+      throw error
     })
   }
 
@@ -36,11 +49,22 @@ async function connectDB() {
     cached.conn = await cached.promise
   } catch (e) {
     cached.promise = null
-    console.error('MongoDB bağlantı hatası:', e)
+    console.error('❌ MongoDB bağlantı hatası:', e)
     throw e
   }
 
   return cached.conn
+}
+
+// Vercel'de graceful shutdown için
+if (process.env.NODE_ENV === 'production') {
+  process.on('SIGTERM', async () => {
+    if (cached.conn) {
+      await cached.conn.disconnect()
+      console.log('MongoDB bağlantısı kapatıldı')
+    }
+    process.exit(0)
+  })
 }
 
 export { connectDB }

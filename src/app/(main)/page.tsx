@@ -128,6 +128,8 @@ async function getSiteDataFromAPI() {
       ? 'http://localhost:3000' 
       : (process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000')
     
+    console.log('🔍 Site data API çağrılıyor:', `${baseUrl}/api/admin/site-data`)
+    
     const response = await fetch(`${baseUrl}/api/admin/site-data`, {
       cache: 'no-store',
       headers: {
@@ -136,13 +138,14 @@ async function getSiteDataFromAPI() {
     })
     
     if (!response.ok) {
-      console.warn('Site data API call failed')
+      console.warn('Site data API call failed:', response.status, response.statusText)
       return null
     }
     const result = await response.json()
+    console.log('✅ Site data API sonucu:', result.success ? 'Başarılı' : 'Başarısız')
     return result.success ? result.data : null
   } catch (error) {
-    console.error('Error fetching site data:', error)
+    console.error('❌ Error fetching site data:', error)
     return null
   }
 }
@@ -157,8 +160,18 @@ export default async function Home() {
   
   try {
     siteData = await getSiteDataFromAPI()
+    console.log('✅ Site data yüklendi:', siteData ? 'Veri var' : 'Veri yok')
+    if (siteData) {
+      console.log('📊 Site data içeriği:', {
+        mission: !!siteData.mission,
+        settings: !!siteData.settings,
+        theme: !!siteData.theme,
+        menu: !!siteData.menu,
+        socials: !!siteData.socials
+      })
+    }
   } catch (error) {
-    console.log('Site data API hatası:', error)
+    console.log('❌ Site data API hatası:', error)
   }
   
   try {
@@ -729,6 +742,9 @@ export default async function Home() {
                 <p className="text-muted-foreground leading-relaxed">
                   {siteData?.mission?.mission || "Kamu çalışanlarının haklarını korumak, sosyal ve ekonomik durumlarını iyileştirmek, demokratik ve laik cumhuriyeti desteklemek."}
                 </p>
+                {!siteData?.mission?.mission && (
+                  <p className="text-xs text-orange-600 mt-2">⚠️ Admin panelinden misyon bilgisini güncelleyin</p>
+                )}
               </CardContent>
             </Card>
 

@@ -8,7 +8,14 @@
     "start": "next start",
     "lint": "next lint",
     "setup-db": "node setup-db.js",
-    "migrate:db": "tsx scripts/migrate-to-db.ts"
+    "migrate:db": "tsx scripts/migrate-to-db.ts",
+    "vercel-build": "next build",
+    "postinstall": "next telemetry disable",
+    "vercel:setup": "node scripts/setup-vercel-env.js",
+    "vercel:deploy": "vercel --prod",
+    "vercel:dev": "vercel dev",
+    "init:mongodb": "node scripts/init-mongodb.js",
+    "deploy:vercel": "node scripts/deploy-to-vercel.js"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.14",
