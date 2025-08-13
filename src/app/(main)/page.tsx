@@ -113,9 +113,9 @@ async function getSlidersFromAPI() {
 async function getSiteDataFromAPI() {
   try {
     // Relative URL kullan - Vercel'de daha güvenilir
-    console.log('🔍 Site data API çağrılıyor:', `/api/admin/site-data`)
+    console.log('🔍 Site data API çağrılıyor:', `/api/public/site-data`)
     
-    const response = await fetch(`/api/admin/site-data`, {
+    const response = await fetch(`/api/public/site-data`, {
       cache: 'no-store',
       headers: {
         'Content-Type': 'application/json',
