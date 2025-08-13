@@ -5,8 +5,7 @@ const SiteDataSchema = new mongoose.Schema({
   section: {
     type: String,
     required: true,
-    enum: ['hero', 'mission', 'settings', 'theme', 'menu', 'socials', 'seo', 'contact', 'analytics'],
-    unique: true
+    enum: ['hero', 'mission', 'settings', 'theme', 'menu', 'socials', 'seo', 'contact', 'analytics']
   },
   data: {
     type: mongoose.Schema.Types.Mixed,

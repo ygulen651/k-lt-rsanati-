@@ -36,7 +36,6 @@ const EventSchema: Schema = new Schema({
   slug: {
     type: String,
     required: [true, 'Slug gereklidir'],
-    unique: true,
     lowercase: true,
     trim: true
   },

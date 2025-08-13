@@ -21,7 +21,7 @@ export interface KamuArDocument extends Document {
 
 const KamuArSchema = new Schema<KamuArDocument>({
   title: { type: String, required: true, trim: true },
-  slug: { type: String, required: true, unique: true, lowercase: true, trim: true },
+  slug: { type: String, required: true, lowercase: true, trim: true },
   excerpt: { type: String, default: '' },
   content: { type: String, default: '' },
   category: { type: String, default: 'genel' },
