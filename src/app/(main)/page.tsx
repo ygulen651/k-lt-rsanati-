@@ -14,7 +14,7 @@ import type { AnnouncementFrontmatter, EventFrontmatter } from "@/lib/mdx"
 async function getAnnouncementsFromAPI() {
   try {
     // Relative URL kullan - Vercel'de daha güvenilir
-    const response = await fetch(`/api/announcements?status=published&limit=6`, {
+    const response = await fetch(`/api/public/announcements?status=published&limit=6`, {
       cache: 'no-store',
       headers: {
         'Content-Type': 'application/json',
@@ -36,7 +36,7 @@ async function getAnnouncementsFromAPI() {
 async function getEventsFromAPI() {
   try {
     // Relative URL kullan - Vercel'de daha güvenilir
-    const response = await fetch(`/api/events?status=published&upcoming=true&limit=6`, {
+    const response = await fetch(`/api/public/events?status=published&upcoming=true&limit=6`, {
       cache: 'no-store',
       headers: {
         'Content-Type': 'application/json',
@@ -90,7 +90,7 @@ function safeGetYear(item: any): string {
 async function getSlidersFromAPI() {
   try {
     // Relative URL kullan - Vercel'de daha güvenilir
-    const response = await fetch(`/api/sliders?active=true`, {
+    const response = await fetch(`/api/public/sliders?active=true`, {
       cache: 'no-store',
       headers: {
         'Content-Type': 'application/json',
@@ -182,7 +182,7 @@ export default async function Home() {
   // Kamu-AR öne çıkanlar
   try {
     // Relative URL kullan - Vercel'de daha güvenilir
-    const res = await fetch(`/api/kamu-ar?status=published`, { cache: 'no-store' })
+    const res = await fetch(`/api/public/kamu-ar?status=published`, { cache: 'no-store' })
     const json = await res.json()
     const items = json.success ? json.data : []
     kamuFeatured = items.filter((x: any) => x.featured).slice(0, 3)
