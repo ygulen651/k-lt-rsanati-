@@ -211,7 +211,7 @@ export function Navbar() {
             {/* Atatürk Görseli */}
             <div className="hidden lg:block relative">
               <div className="bg-white dark:bg-slate-800 p-2 rounded-xl shadow-lg">
-                <Image
+                <img
                   src="/ataturk.png"
                   alt="Mustafa Kemal Atatürk"
                   width={60}

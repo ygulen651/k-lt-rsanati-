@@ -221,7 +221,7 @@ export default function EventsPage() {
               <div className="mb-4">
                 <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400 mb-1">
                   <span>Doluluk Oranı</span>
-                  <span>{Math.round((event.registered / event.capacity) * 100)}%</span>
+                  <span>{Math.round((((event as any).registered || 0) / ((event as any).capacity || 1)) * 100)}%</span>
                 </div>
                 <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
                   <div className="bg-red-600 h-2 rounded-full transition-all duration-300" style={{ width: `0%` }}></div>

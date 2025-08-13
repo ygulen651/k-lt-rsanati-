@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken'
 import { NextRequest } from 'next/server'
-import User, { IUser } from '@/models/User'
+import AdminUser from '@/models/AdminUser'
 import connectDB from '@/lib/mongodb'
 
 const JWT_SECRET = process.env.JWT_SECRET!
@@ -19,7 +19,7 @@ export interface AuthUser {
 /**
  * JWT token oluşturur
  */
-export function generateToken(user: IUser): string {
+export function generateToken(user: any): string {
   return jwt.sign(
     {
       id: user._id,
@@ -79,7 +79,7 @@ export async function authenticate(request: NextRequest): Promise<AuthUser | nul
   // Kullanıcının hala aktif olduğunu kontrol et
   try {
     await connectDB()
-    const dbUser = await User.findById(user.id).select('isActive role')
+    const dbUser = await AdminUser.findById(user.id).select('isActive role')
     if (!dbUser || !dbUser.isActive) {
       return null
     }

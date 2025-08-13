@@ -1,7 +1,7 @@
 // Basit veri yönetimi - gerçek zamanlı çalışan sistem
 
 // Memory'de veri tutacağız (geliştirme için)
-let announcements: any[] = [
+const announcements: Record<string, any>[] = [
   {
     id: '1',
     title: 'Örnek Duyuru 1',
@@ -34,7 +34,7 @@ let announcements: any[] = [
   }
 ]
 
-let events: any[] = [
+const events: Record<string, any>[] = [
   {
     id: '1',
     title: 'Örnek Etkinlik',
@@ -70,7 +70,7 @@ export const AnnouncementManager = {
   
   getById: (id: string) => announcements.find(a => a.id === id),
   
-  add: (data: any) => {
+  add: (data: Record<string, any>) => {
     try {
       const newAnnouncement = {
         id: Date.now().toString(),
@@ -79,7 +79,7 @@ export const AnnouncementManager = {
         updatedAt: new Date().toISOString()
       }
       announcements.unshift(newAnnouncement) // En başa ekle
-      console.log('Yeni duyuru eklendi:', newAnnouncement.title)
+      console.log('Yeni duyuru eklendi:', (newAnnouncement as any).title)
       return true
     } catch (error) {
       console.error('Duyuru ekleme hatası:', error)
@@ -87,7 +87,7 @@ export const AnnouncementManager = {
     }
   },
   
-  update: (id: string, data: any) => {
+  update: (id: string, data: Record<string, any>) => {
     try {
       const index = announcements.findIndex(a => a.id === id)
       if (index !== -1) {
@@ -96,7 +96,7 @@ export const AnnouncementManager = {
           ...data,
           updatedAt: new Date().toISOString()
         }
-        console.log('Duyuru güncellendi:', announcements[index].title)
+        console.log('Duyuru güncellendi:', (announcements[index] as any).title)
         return true
       }
       return false
@@ -111,7 +111,7 @@ export const AnnouncementManager = {
       const index = announcements.findIndex(a => a.id === id)
       if (index !== -1) {
         const deleted = announcements.splice(index, 1)[0]
-        console.log('Duyuru silindi:', deleted.title)
+        console.log('Duyuru silindi:', (deleted as any).title)
         return true
       }
       return false
@@ -135,7 +135,7 @@ export const EventManager = {
     return events.filter(e => new Date(e.date) >= now && e.status === 'published')
   },
   
-  add: (data: any) => {
+  add: (data: Record<string, any>) => {
     try {
       const newEvent = {
         id: Date.now().toString(),
@@ -143,7 +143,7 @@ export const EventManager = {
         createdAt: new Date().toISOString()
       }
       events.unshift(newEvent)
-      console.log('Yeni etkinlik eklendi:', newEvent.title)
+      console.log('Yeni etkinlik eklendi:', (newEvent as any).title)
       return true
     } catch (error) {
       console.error('Etkinlik ekleme hatası:', error)
@@ -151,12 +151,12 @@ export const EventManager = {
     }
   },
   
-  update: (id: string, data: any) => {
+  update: (id: string, data: Record<string, any>) => {
     try {
       const index = events.findIndex(e => e.id === id)
       if (index !== -1) {
         events[index] = { ...events[index], ...data }
-        console.log('Etkinlik güncellendi:', events[index].title)
+        console.log('Etkinlik güncellendi:', (events[index] as any).title)
         return true
       }
       return false
@@ -171,7 +171,7 @@ export const EventManager = {
       const index = events.findIndex(e => e.id === id)
       if (index !== -1) {
         const deleted = events.splice(index, 1)[0]
-        console.log('Etkinlik silindi:', deleted.title)
+        console.log('Etkinlik silindi:', (deleted as any).title)
         return true
       }
       return false
@@ -186,10 +186,10 @@ export const EventManager = {
 export const SiteDataManager = {
   get: () => siteData,
   
-  update: (section: string, data: any) => {
+  update: (section: string, data: Record<string, any>) => {
     try {
       if (siteData[section as keyof typeof siteData]) {
-        siteData[section as keyof typeof siteData] = { 
+        (siteData as any)[section] = { 
           ...siteData[section as keyof typeof siteData], 
           ...data 
         }
@@ -203,7 +203,7 @@ export const SiteDataManager = {
     }
   },
   
-  updateAll: (data: any) => {
+  updateAll: (data: Record<string, any>) => {
     try {
       siteData = { ...siteData, ...data }
       console.log('Tüm site verisi güncellendi')

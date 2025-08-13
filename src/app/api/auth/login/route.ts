@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import connectDB from '@/lib/mongodb'
-import User from '@/models/User'
+import AdminUser from '@/models/AdminUser'
 import { generateToken } from '@/lib/auth'
+import bcrypt from 'bcryptjs'
 
 export async function POST(request: NextRequest) {
   try {
@@ -17,8 +18,8 @@ export async function POST(request: NextRequest) {
       )
     }
     
-    // Kullanıcıyı bul (şifre dahil)
-    const user = await User.findOne({ email }).select('+password')
+    // Kullanıcıyı bul
+    const user = await AdminUser.findOne({ email })
     
     if (!user) {
       return NextResponse.json(
@@ -35,8 +36,8 @@ export async function POST(request: NextRequest) {
       )
     }
     
-    // Şifre kontrolü
-    const isPasswordValid = await user.comparePassword(password)
+    // Şifre kontrolü - AdminUser modeli comparePassword metodu olmadığı için bcrypt ile kontrol
+    const isPasswordValid = await bcrypt.compare(password, user.password)
     
     if (!isPasswordValid) {
       return NextResponse.json(

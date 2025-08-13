@@ -109,7 +109,8 @@ AnnouncementSchema.index({ createdAt: -1 })
 // Slug otomatik oluşturma
 AnnouncementSchema.pre('save', function(next) {
   if (this.isModified('title') && !this.slug) {
-    this.slug = this.title
+    const doc = this as any
+    doc.slug = doc.title
       .toLowerCase()
       .replace(/[^a-z0-9\s-]/g, '') // Özel karakterleri kaldır
       .replace(/\s+/g, '-') // Boşlukları tire ile değiştir

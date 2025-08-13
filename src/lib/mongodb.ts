@@ -17,11 +17,11 @@ if (!cached) {
 }
 
 async function connectDB() {
-  if (cached.conn) {
+  if (cached?.conn) {
     return cached.conn
   }
 
-  if (!cached.promise) {
+  if (!cached?.promise) {
     const opts = {
       bufferCommands: false,
       // Vercel'de connection pooling için
@@ -32,34 +32,34 @@ async function connectDB() {
       connectTimeoutMS: 10000,
       // Vercel'de retry logic
       retryWrites: true,
-      w: 'majority'
+      w: 'majority' as const
     }
 
-    cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
+    cached!.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
       console.log('✅ MongoDB bağlantısı başarılı')
       return mongoose
     }).catch((error) => {
       console.error('❌ MongoDB bağlantı hatası:', error)
-      cached.promise = null
+      cached!.promise = null
       throw error
     })
   }
 
   try {
-    cached.conn = await cached.promise
+    cached!.conn = await cached!.promise
   } catch (e) {
-    cached.promise = null
+    cached!.promise = null
     console.error('❌ MongoDB bağlantı hatası:', e)
     throw e
   }
 
-  return cached.conn
+  return cached!.conn
 }
 
 // Vercel'de graceful shutdown için
 if (process.env.NODE_ENV === 'production') {
   process.on('SIGTERM', async () => {
-    if (cached.conn) {
+    if (cached?.conn) {
       await cached.conn.disconnect()
       console.log('MongoDB bağlantısı kapatıldı')
     }
@@ -73,7 +73,7 @@ export default connectDB
 // Global type tanımı
 declare global {
   var mongoose: {
-    conn: typeof mongoose | null
-    promise: Promise<typeof mongoose> | null
-  }
+    conn: any | null
+    promise: Promise<any> | null
+  } | undefined
 }

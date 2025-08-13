@@ -46,13 +46,16 @@ export default function YeniUyePage() {
     
     if (name.includes('.')) {
       const [section, field] = name.split('.')
-      setFormData(prev => ({
-        ...prev,
-        [section]: {
-          ...prev[section as keyof typeof prev],
-          [field]: value
+      setFormData(prev => {
+        const currentSection = prev[section as keyof typeof prev] as any
+        return {
+          ...prev,
+          [section]: {
+            ...(currentSection || {}),
+            [field]: value
+          }
         }
-      }))
+      })
     } else {
       setFormData(prev => ({
         ...prev,
