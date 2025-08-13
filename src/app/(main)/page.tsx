@@ -13,7 +13,8 @@ import type { AnnouncementFrontmatter, EventFrontmatter } from "@/lib/mdx"
 import { getBaseUrl } from "@/lib/baseUrl"
 
 async function fetchJson(path: string) {
-  const res = await fetch(new URL(path, getBaseUrl()), { cache: "no-store" });
+  // Server-side'da relative URL kullan
+  const res = await fetch(path, { cache: "no-store" });
   if (!res.ok) throw new Error(`HTTP ${res.status} ${path}`);
   const ct = res.headers.get("content-type") || "";
   if (!ct.includes("application/json")) {
@@ -26,7 +27,7 @@ async function fetchJson(path: string) {
 async function getAnnouncementsFromAPI() {
   try {
     const result = await fetchJson('/api/public/announcements?status=published&limit=6')
-    return result.success ? result.data : []
+    return result.ok ? result.data : []
   } catch (error) {
     console.error('Error fetching announcements from API:', error)
     return []
@@ -36,7 +37,7 @@ async function getAnnouncementsFromAPI() {
 async function getEventsFromAPI() {
   try {
     const result = await fetchJson('/api/public/events?status=published&upcoming=true&limit=6')
-    return result.success ? result.data : []
+    return result.ok ? result.data : []
   } catch (error) {
     console.error('Error fetching events from API:', error)
     return []
@@ -78,7 +79,7 @@ function safeGetYear(item: any): string {
 async function getSlidersFromAPI() {
   try {
     const result = await fetchJson('/api/public/sliders?active=true')
-    return result.success ? result.data : []
+    return result.ok ? result.data : []
   } catch (error) {
     console.error('Error fetching sliders:', error)
     return []
@@ -146,7 +147,7 @@ export default async function Home() {
   // Kamu-AR öne çıkanlar
   try {
     const result = await fetchJson('/api/public/kamu-ar?status=published')
-    const items = result.success ? result.data : []
+    const items = result.ok ? result.data : []
     kamuFeatured = items.filter((x: any) => x.featured).slice(0, 3)
   } catch (e) {
     console.log('Kamu-AR API hatası:', e)
