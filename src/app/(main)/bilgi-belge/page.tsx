@@ -16,9 +16,8 @@ export const metadata = generatePageSEO({
 // API'den belgeleri çek
 async function getDocuments() {
   try {
-    // Server-side için absolute URL kullan
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://your-domain.vercel.app'
-    const response = await fetch(`${baseUrl}/api/documents?showPrivate=false`, {
+    // Relative URL kullan - hem local hem Vercel'de çalışır
+    const response = await fetch(`/api/documents?showPrivate=false`, {
       cache: 'no-store' // Her zaman fresh data
     })
     
