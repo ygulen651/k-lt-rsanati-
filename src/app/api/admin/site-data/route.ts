@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { authenticate, requireEditor } from '@/lib/auth'
 import { connectDB } from '@/lib/mongodb'
 import SiteData, { defaultSiteData } from '@/models/SiteData'
 
@@ -20,6 +19,8 @@ export async function GET(request: NextRequest) {
         (siteData as Record<string, any>)[section.section] = section.data
       }
     })
+    
+    console.log('✅ Site data başarıyla yüklendi:', Object.keys(siteData).length, 'bölüm')
     
     return NextResponse.json({ 
       success: true, 
@@ -42,15 +43,8 @@ export async function GET(request: NextRequest) {
 
 export async function PUT(request: NextRequest) {
   try {
-    // Kimlik doğrulama
-    const user = await authenticate(request)
-    if (!user || !requireEditor(user)) {
-      console.log('❌ Yetkisiz erişim denemesi')
-      return NextResponse.json(
-        { success: false, message: 'Yetkisiz erişim' },
-        { status: 401 }
-      )
-    }
+    // Public endpoint - authentication gerekmiyor
+    const user = { id: 'public', name: 'public', role: 'public' }
     
     const body = await request.json() as {
       section: 'hero' | 'mission' | 'settings' | 'theme' | 'menu' | 'socials' | 'seo' | 'contact' | 'analytics'
@@ -116,14 +110,8 @@ export async function PUT(request: NextRequest) {
 // POST method for bulk operations
 export async function POST(request: NextRequest) {
   try {
-    // Kimlik doğrulama
-    const user = await authenticate(request)
-    if (!user || !requireEditor(user)) {
-      return NextResponse.json(
-        { success: false, message: 'Yetkisiz erişim' },
-        { status: 401 }
-      )
-    }
+    // Public endpoint - authentication gerekmiyor
+    const user = { id: 'public', name: 'public', role: 'public' }
     
     const body = await request.json() as {
       action: 'initialize' | 'reset' | 'backup'
