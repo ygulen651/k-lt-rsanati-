@@ -35,7 +35,7 @@ SiteDataSchema.virtual('fullData').get(function() {
 // JSON serialization
 SiteDataSchema.set('toJSON', {
   virtuals: true,
-  transform: function(doc, ret) {
+  transform: function(doc, ret: Record<string, any>) {
     delete ret._id;
     delete ret.__v;
     return ret;

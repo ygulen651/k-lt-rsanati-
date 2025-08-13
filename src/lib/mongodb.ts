@@ -60,7 +60,7 @@ async function connectDB() {
 if (process.env.NODE_ENV === 'production') {
   process.on('SIGTERM', async () => {
     if (cached?.conn) {
-      await cached.conn.disconnect()
+      await (cached.conn as typeof mongoose).disconnect()
       console.log('MongoDB bağlantısı kapatıldı')
     }
     process.exit(0)
@@ -73,7 +73,7 @@ export default connectDB
 // Global type tanımı
 declare global {
   var mongoose: {
-    conn: any | null
-    promise: Promise<any> | null
+    conn: unknown | null
+    promise: Promise<unknown> | null
   } | undefined
 }

@@ -15,9 +15,9 @@ export async function GET(request: NextRequest) {
     let siteData = { ...defaultSiteData }
     
     // MongoDB'den gelen verileri merge et
-    siteDataSections.forEach((section: any) => {
+    siteDataSections.forEach((section: Record<string, any>) => {
       if (section.section && section.data) {
-        (siteData as any)[section.section] = section.data
+        (siteData as Record<string, any>)[section.section] = section.data
       }
     })
     
@@ -54,7 +54,7 @@ export async function PUT(request: NextRequest) {
     
     const body = await request.json() as {
       section: 'hero' | 'mission' | 'settings' | 'theme' | 'menu' | 'socials' | 'seo' | 'contact' | 'analytics'
-      data: any
+      data: Record<string, any>
     }
     
     console.log('📝 PUT request - section:', body.section)

@@ -13,6 +13,10 @@ export async function GET(request: NextRequest) {
     
     // Database bilgilerini al
     const db = mongoose.connection.db
+    if (!db) {
+      throw new Error('Database connection not available')
+    }
+    
     const collections = await db.listCollections().toArray()
     
     // Collection'lardan veri sayılarını al
@@ -28,7 +32,7 @@ export async function GET(request: NextRequest) {
         collectionStats.push({
           name: collection.name,
           count: 'error',
-          error: error.message
+          error: error instanceof Error ? error.message : 'Unknown error'
         })
       }
     }
@@ -63,7 +67,7 @@ export async function GET(request: NextRequest) {
     
     return NextResponse.json(result)
     
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('❌ MongoDB Test hatası:', error)
     
     const errorResult = {
@@ -71,9 +75,9 @@ export async function GET(request: NextRequest) {
       message: 'MongoDB bağlantısı başarısız',
       timestamp: new Date().toISOString(),
       error: {
-        name: error.name,
-        message: error.message,
-        stack: error.stack
+        name: error instanceof Error ? error.name : 'Unknown',
+        message: error instanceof Error ? error.message : 'Unknown error',
+        stack: error instanceof Error ? error.stack : undefined
       },
       environment: {
         MONGODB_URI: process.env.MONGODB_URI ? 'Set' : 'Not Set',
@@ -110,6 +114,9 @@ export async function POST(request: NextRequest) {
       // Basit veri sorgusu testi
       await connectDB()
       const db = mongoose.connection.db
+      if (!db) {
+        throw new Error('Database connection not available')
+      }
       
       // Örnek veri sorgusu
       const users = await db.collection('users').find({}).limit(5).toArray()
@@ -134,13 +141,13 @@ export async function POST(request: NextRequest) {
       validActions: ['ping', 'query']
     }, { status: 400 })
     
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('❌ MongoDB Test POST hatası:', error)
     
     return NextResponse.json({
       success: false,
       message: 'Test başarısız',
-      error: error.message
+      error: error instanceof Error ? error.message : 'Unknown error'
     }, { status: 500 })
   }
 }
