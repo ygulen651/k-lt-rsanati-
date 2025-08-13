@@ -13,12 +13,8 @@ import type { AnnouncementFrontmatter, EventFrontmatter } from "@/lib/mdx"
 
 async function getAnnouncementsFromAPI() {
   try {
-    // Server-side için localhost kullan
-    const baseUrl = process.env.NODE_ENV === 'development' 
-      ? 'http://localhost:3000' 
-      : (process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000')
-    
-    const response = await fetch(`${baseUrl}/api/announcements?status=published&limit=6`, {
+    // Relative URL kullan - Vercel'de çalışır
+    const response = await fetch(`/api/announcements?status=published&limit=6`, {
       cache: 'no-store',
       headers: {
         'Content-Type': 'application/json',
@@ -39,12 +35,8 @@ async function getAnnouncementsFromAPI() {
 
 async function getEventsFromAPI() {
   try {
-    // Server-side için localhost kullan
-    const baseUrl = process.env.NODE_ENV === 'development' 
-      ? 'http://localhost:3000' 
-      : (process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000')
-    
-    const response = await fetch(`${baseUrl}/api/events?status=published&upcoming=true&limit=6`, {
+    // Relative URL kullan - Vercel'de çalışır
+    const response = await fetch(`/api/events?status=published&upcoming=true&limit=6`, {
       cache: 'no-store',
       headers: {
         'Content-Type': 'application/json',
@@ -97,11 +89,8 @@ function safeGetYear(item: any): string {
 // Slider verilerini al
 async function getSlidersFromAPI() {
   try {
-    const baseUrl = process.env.NODE_ENV === 'development' 
-      ? 'http://localhost:3000' 
-      : (process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000')
-    
-    const response = await fetch(`${baseUrl}/api/sliders?active=true`, {
+    // Relative URL kullan - Vercel'de çalışır
+    const response = await fetch(`/api/sliders?active=true`, {
       cache: 'no-store',
       headers: {
         'Content-Type': 'application/json',
@@ -123,14 +112,10 @@ async function getSlidersFromAPI() {
 // Admin verilerini al
 async function getSiteDataFromAPI() {
   try {
-    // Server-side için localhost kullan
-    const baseUrl = process.env.NODE_ENV === 'development' 
-      ? 'http://localhost:3000' 
-      : (process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000')
+    // Relative URL kullan - Vercel'de çalışır
+    console.log('🔍 Site data API çağrılıyor:', `/api/admin/site-data`)
     
-    console.log('🔍 Site data API çağrılıyor:', `${baseUrl}/api/admin/site-data`)
-    
-    const response = await fetch(`${baseUrl}/api/admin/site-data`, {
+    const response = await fetch(`/api/admin/site-data`, {
       cache: 'no-store',
       headers: {
         'Content-Type': 'application/json',
@@ -196,10 +181,8 @@ export default async function Home() {
 
   // Kamu-AR öne çıkanlar
   try {
-    const baseUrl = process.env.NODE_ENV === 'development' 
-      ? 'http://localhost:3000' 
-      : (process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000')
-    const res = await fetch(`${baseUrl}/api/kamu-ar?status=published`, { cache: 'no-store' })
+    // Relative URL kullan - Vercel'de çalışır
+    const res = await fetch(`/api/kamu-ar?status=published`, { cache: 'no-store' })
     const json = await res.json()
     const items = json.success ? json.data : []
     kamuFeatured = items.filter((x: any) => x.featured).slice(0, 3)

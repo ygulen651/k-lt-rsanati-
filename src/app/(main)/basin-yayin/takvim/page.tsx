@@ -2,7 +2,7 @@ import { Section } from '@/components/Section'
 import { Container } from '@/components/Container'
 
 async function getData() {
-  const baseUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : (process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000')
+  const baseUrl = ""
   const res = await fetch(`${baseUrl}/api/press?category=takvim`, { cache: 'no-store' })
   const json = await res.json()
   return json.success ? json.data : []

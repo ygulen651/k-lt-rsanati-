@@ -6,7 +6,8 @@ import { Calendar, Clock, MapPin, ArrowLeft } from 'lucide-react'
 
 async function getEvent(slug: string) {
   try {
-    const baseUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : (process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000')
+    // Relative URL kullan - Vercel'de çalışır
+  const baseUrl = ''
     const res = await fetch(`${baseUrl}/api/events?slug=${encodeURIComponent(slug)}`, { cache: 'no-store' })
     const json = await res.json()
     const items = json.success ? json.data : []

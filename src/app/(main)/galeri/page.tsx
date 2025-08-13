@@ -14,7 +14,8 @@ export const metadata = generatePageSEO({
 
 async function getMedia() {
   try {
-    const baseUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : (process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000')
+    // Relative URL kullan - Vercel'de çalışır
+  const baseUrl = ''
     const res = await fetch(`${baseUrl}/api/media?status=published`, { cache: 'no-store' })
     const json = await res.json()
     return json.success ? json.data : []

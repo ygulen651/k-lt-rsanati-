@@ -5,7 +5,7 @@ import { Container } from '@/components/Container'
 
 async function getItems(params?: { search?: string }) {
   try {
-    const baseUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : (process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000')
+    const baseUrl = ""
     const qs = new URLSearchParams()
     qs.set('status', 'published')
     if (params?.search) qs.set('search', params.search)

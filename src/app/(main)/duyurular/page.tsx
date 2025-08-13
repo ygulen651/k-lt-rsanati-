@@ -19,11 +19,8 @@ export const metadata = generatePageSEO({
 // API'den duyuruları getir
 async function getAnnouncementsFromAPI() {
   try {
-    const baseUrl = process.env.NODE_ENV === 'development' 
-      ? 'http://localhost:3000' 
-      : (process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000')
-    
-    const response = await fetch(`${baseUrl}/api/announcements?status=published`, {
+    // Relative URL kullan - Vercel'de çalışır
+    const response = await fetch(`/api/announcements?status=published`, {
       cache: 'no-store',
       headers: {
         'Content-Type': 'application/json',

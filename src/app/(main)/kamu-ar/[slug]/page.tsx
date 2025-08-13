@@ -4,7 +4,7 @@ import { Container } from '@/components/Container'
 
 async function getItem(slug: string) {
   try {
-    const baseUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : (process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000')
+    const baseUrl = ""
     const res = await fetch(`${baseUrl}/api/kamu-ar/${slug}`, { cache: 'no-store' })
     const json = await res.json()
     return json.success ? json.data : null

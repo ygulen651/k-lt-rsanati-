@@ -11,9 +11,8 @@ import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
 // API'den duyuru getir
 async function getAnnouncementBySlug(slug: string) {
   try {
-    const baseUrl = process.env.NODE_ENV === 'development' 
-      ? 'http://localhost:3000' 
-      : (process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000')
+      // Relative URL kullan - Vercel'de çalışır
+  const baseUrl = ''
     
     const response = await fetch(`${baseUrl}/api/announcements`, {
       cache: 'no-store'
@@ -171,7 +170,7 @@ export default async function DuyuruDetayPage({ params }: PageProps) {
                   <a href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(announcement.title)}`} target="_blank" rel="noopener noreferrer">Twitter</a>
                 </Button>
                 <Button variant="outline" size="sm" asChild>
-                  <a href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/duyurular/${announcement.slug}`)}`} target="_blank" rel="noopener noreferrer">Facebook</a>
+                  <a href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`/duyurular/${announcement.slug}`)}`} target="_blank" rel="noopener noreferrer">Facebook</a>
                 </Button>
               </div>
             </div>
@@ -214,7 +213,7 @@ export async function generateMetadata({ params }: PageProps) {
 // İlgili duyurular (aynı kategoriden son 3 duyuru)
 async function fetchRelated(category: string, currentSlug: string) {
   try {
-    const baseUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : (process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000')
+    const baseUrl = ""
     const res = await fetch(`${baseUrl}/api/announcements?status=published&category=${encodeURIComponent(category)}&limit=3`, { cache: 'no-store' })
     const json = await res.json()
     const items = json.success ? json.data : []
