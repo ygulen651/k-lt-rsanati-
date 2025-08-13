@@ -31,7 +31,7 @@ export async function GET(request: NextRequest) {
     const total = await Slider.countDocuments(query)
 
     return NextResponse.json({
-      success: true,
+      ok: true,
       data: sliders,
       pagination: {
         current: page,
@@ -43,7 +43,7 @@ export async function GET(request: NextRequest) {
   } catch (error: any) {
     console.error('Public Sliders error:', error)
     return NextResponse.json(
-      { success: false, message: 'Slider\'lar getirilemedi', error: error.message },
+      { ok: false, message: 'Slider\'lar getirilemedi', error: error.message },
       { status: 500 }
     )
   }

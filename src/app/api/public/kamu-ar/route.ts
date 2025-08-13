@@ -14,9 +14,9 @@ export async function GET(request: NextRequest) {
     if (search) query.$text = { $search: search }
 
     const items = await KamuAr.find(query).sort({ publishDate: -1 }).lean()
-    return NextResponse.json({ success: true, data: items })
+    return NextResponse.json({ ok: true, data: items })
   } catch (e: any) {
     console.error('Public Kamu-Ar error:', e)
-    return NextResponse.json({ success: false, message: 'Kamu-Ar içerikleri alınamadı' }, { status: 500 })
+    return NextResponse.json({ ok: false, message: 'Kamu-Ar içerikleri alınamadı' }, { status: 500 })
   }
 }

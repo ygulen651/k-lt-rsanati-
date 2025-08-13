@@ -33,7 +33,6 @@
     "gray-matter": "^4.0.3",
     "jsonwebtoken": "^9.0.2",
     "lucide-react": "^0.539.0",
-    "mongoose": "^8.17.1",
     "next": "15.4.6",
     "next-auth": "^4.24.11",
     "next-mdx-remote": "^5.0.0",
@@ -53,9 +52,11 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.4.6",
+    "mongoose": "^8.17.1",
     "tailwindcss": "^4",
+    "ts-node": "^10.9.2",
     "tsx": "^4.20.3",
     "tw-animate-css": "^1.3.6",
-    "typescript": "^5"
+    "typescript": "^5.9.2"
   }
 }

@@ -42,7 +42,7 @@ export async function GET(request: NextRequest) {
     const total = await Announcement.countDocuments(query)
     
     return NextResponse.json({
-      success: true,
+      ok: true,
       data: announcements,
       pagination: {
         current: page,
@@ -54,7 +54,7 @@ export async function GET(request: NextRequest) {
   } catch (error: any) {
     console.error('Public Announcements error:', error)
     return NextResponse.json(
-      { success: false, message: 'Duyurular getirilemedi', error: error.message },
+      { ok: false, message: 'Duyurular getirilemedi', error: error.message },
       { status: 500 }
     )
   }

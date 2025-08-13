@@ -47,7 +47,7 @@ export async function GET(request: NextRequest) {
     const total = await Event.countDocuments(query)
     
     return NextResponse.json({
-      success: true,
+      ok: true,
       data: events,
       pagination: {
         current: page,
@@ -59,7 +59,7 @@ export async function GET(request: NextRequest) {
   } catch (error: any) {
     console.error('Public Events error:', error)
     return NextResponse.json(
-      { success: false, message: 'Etkinlikler getirilemedi', error: error.message },
+      { ok: false, message: 'Etkinlikler getirilemedi', error: error.message },
       { status: 500 }
     )
   }
