@@ -10,22 +10,22 @@ import { Section } from "@/components/Section"
 import { Container } from "@/components/Container"
 import { getContentByType } from "@/lib/mdx"
 import type { AnnouncementFrontmatter, EventFrontmatter } from "@/lib/mdx"
+import { getBaseUrl } from "@/lib/baseUrl"
+
+async function fetchJson(path: string) {
+  const res = await fetch(new URL(path, getBaseUrl()), { cache: "no-store" });
+  if (!res.ok) throw new Error(`HTTP ${res.status} ${path}`);
+  const ct = res.headers.get("content-type") || "";
+  if (!ct.includes("application/json")) {
+    const t = await res.text();
+    throw new Error(`JSON değil: ${path} -> ${t.slice(0,120)}...`);
+  }
+  return res.json();
+}
 
 async function getAnnouncementsFromAPI() {
   try {
-    // Relative URL kullan - Vercel'de daha güvenilir
-    const response = await fetch(`/api/public/announcements?status=published&limit=6`, {
-      cache: 'no-store',
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    })
-    
-    if (!response.ok) {
-      console.warn(`API call failed with status ${response.status}`)
-      return []
-    }
-    const result = await response.json()
+    const result = await fetchJson('/api/public/announcements?status=published&limit=6')
     return result.success ? result.data : []
   } catch (error) {
     console.error('Error fetching announcements from API:', error)
@@ -35,19 +35,7 @@ async function getAnnouncementsFromAPI() {
 
 async function getEventsFromAPI() {
   try {
-    // Relative URL kullan - Vercel'de daha güvenilir
-    const response = await fetch(`/api/public/events?status=published&upcoming=true&limit=6`, {
-      cache: 'no-store',
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    })
-    
-    if (!response.ok) {
-      console.warn(`API call failed with status ${response.status}`)
-      return []
-    }
-    const result = await response.json()
+    const result = await fetchJson('/api/public/events?status=published&upcoming=true&limit=6')
     return result.success ? result.data : []
   } catch (error) {
     console.error('Error fetching events from API:', error)
@@ -89,19 +77,7 @@ function safeGetYear(item: any): string {
 // Slider verilerini al
 async function getSlidersFromAPI() {
   try {
-    // Relative URL kullan - Vercel'de daha güvenilir
-    const response = await fetch(`/api/public/sliders?active=true`, {
-      cache: 'no-store',
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    })
-    
-    if (!response.ok) {
-      console.warn('Sliders API call failed')
-      return []
-    }
-    const result = await response.json()
+    const result = await fetchJson('/api/public/sliders?active=true')
     return result.success ? result.data : []
   } catch (error) {
     console.error('Error fetching sliders:', error)
@@ -112,23 +88,11 @@ async function getSlidersFromAPI() {
 // Admin verilerini al
 async function getSiteDataFromAPI() {
   try {
-    // Relative URL kullan - Vercel'de daha güvenilir
     console.log('🔍 Site data API çağrılıyor:', `/api/public/site-data`)
     
-    const response = await fetch(`/api/public/site-data`, {
-      cache: 'no-store',
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    })
-    
-    if (!response.ok) {
-      console.warn('Site data API call failed:', response.status, response.statusText)
-      return null
-    }
-    const result = await response.json()
-    console.log('✅ Site data API sonucu:', result.success ? 'Başarılı' : 'Başarısız')
-    return result.success ? result.data : null
+    const result = await fetchJson('/api/public/site-data')
+    console.log('✅ Site data API sonucu:', result.ok ? 'Başarılı' : 'Başarısız')
+    return result.ok ? result.data : null
   } catch (error) {
     console.error('❌ Error fetching site data:', error)
     return null
@@ -181,10 +145,8 @@ export default async function Home() {
 
   // Kamu-AR öne çıkanlar
   try {
-    // Relative URL kullan - Vercel'de daha güvenilir
-    const res = await fetch(`/api/public/kamu-ar?status=published`, { cache: 'no-store' })
-    const json = await res.json()
-    const items = json.success ? json.data : []
+    const result = await fetchJson('/api/public/kamu-ar?status=published')
+    const items = result.success ? result.data : []
     kamuFeatured = items.filter((x: any) => x.featured).slice(0, 3)
   } catch (e) {
     console.log('Kamu-AR API hatası:', e)
