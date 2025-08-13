@@ -12,7 +12,7 @@ import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
 async function getAnnouncementBySlug(slug: string) {
   try {
       // Relative URL kullan - Vercel'de çalışır
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://your-domain.vercel.app'
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
     
     const response = await fetch(`${baseUrl}/api/announcements`, {
       cache: 'no-store'

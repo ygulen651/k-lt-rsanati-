@@ -250,7 +250,7 @@ export default async function Home() {
       title: "MADİMAK'ın 32. YILINDA AYDINLIĞA YÖNELİK SALDIRILAR SÜRÜYOR",
       subtitle: "unutMADİMAKlımaa",
       description: "Aydınlığın Yakıldığı Yer... 2 TEMMUZ 1993",
-      image: "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=1920&h=1080&fit=crop",
+              image: "/images/fallback/madimak.jpg",
       date: "2025-07-02",
       category: "Anma",
       link: "/duyurular",
@@ -261,7 +261,7 @@ export default async function Home() {
       title: "1 Mayıs İşçi Bayramı Kutlu Olsun",
       subtitle: "Emek ve Dayanışma Günü",
       description: "Tüm işçilerin 1 Mayıs Emek ve Dayanışma Günü kutlu olsun. Birlik ve mücadele ruhuyla...",
-      image: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=1920&h=1080&fit=crop",
+              image: "/images/fallback/1mayis.jpg",
       date: "2025-05-01",
       category: "Kutlama",
       link: "/etkinlikler",
@@ -430,7 +430,7 @@ export default async function Home() {
                           className="object-cover opacity-60"
                         />
                       ) : (
-                        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1557804506-669a67965ba0?w=800&h=600&fit=crop')] bg-cover bg-center opacity-60"></div>
+                        <div className="absolute inset-0 bg-[url('/images/fallback/hero-bg.jpg')] bg-cover bg-center opacity-60"></div>
                       )}
                       <div className="absolute inset-0 bg-gradient-to-br from-red-500/50 via-red-600/40 to-red-700/50"></div>
                       <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_70%,rgba(255,255,255,0.15)_1px,transparent_1px)] bg-[length:25px_25px] opacity-30"></div>
@@ -520,8 +520,8 @@ export default async function Home() {
                       ) : (
                         <div className={`absolute inset-0 bg-cover bg-center opacity-50 ${
                           index === 0 
-                            ? "bg-[url('https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&h=400&fit=crop')]" 
-                            : "bg-[url('https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=600&h=400&fit=crop')]"
+                                            ? "bg-[url('/images/fallback/event-1.jpg')]"
+                : "bg-[url('/images/fallback/event-2.jpg')]"
                         }`}></div>
                       )}
                       <div className={`absolute inset-0 ${
@@ -584,10 +584,10 @@ export default async function Home() {
                     <div className="absolute inset-0">
                       <div className={`absolute inset-0 bg-cover bg-center opacity-55 ${
                         index === 0 
-                          ? "bg-[url('https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=400&h=300&fit=crop')]" 
-                          : index === 1
-                          ? "bg-[url('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=300&fit=crop')]"
-                          : "bg-[url('https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=400&h=300&fit=crop')]"
+                                          ? "bg-[url('/images/fallback/announcement-1.jpg')]"
+                : index === 1
+                ? "bg-[url('/images/fallback/announcement-2.jpg')]"
+                : "bg-[url('/images/fallback/announcement-3.jpg')]"
                       }`}></div>
                       <div className={`absolute inset-0 ${
                         index === 0 

@@ -171,7 +171,7 @@ export default async function DuyurularPage() {
                 </Link>
               </Button>
               <Button size="lg" variant="outline" asChild>
-                <a href="https://twitter.com/kultursanatis" target="_blank" rel="noopener noreferrer">
+                <a href="/admin/sosyal-medya" target="_blank" rel="noopener noreferrer">
                   Twitter'da Takip Et
                 </a>
               </Button>
