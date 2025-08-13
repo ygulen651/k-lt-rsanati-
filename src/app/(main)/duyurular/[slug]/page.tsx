@@ -213,12 +213,8 @@ export async function generateMetadata({ params }: PageProps) {
 // İlgili duyurular (aynı kategoriden son 3 duyuru)
 async function fetchRelated(category: string, currentSlug: string) {
   try {
-          // Server-side için environment variable kullan
-      const baseUrl = process.env.VERCEL_URL 
-        ? `https://${process.env.VERCEL_URL}` 
-        : process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
-      
-      const res = await fetch(`${baseUrl}/api/announcements?status=published&category=${encodeURIComponent(category)}&limit=3`, { cache: 'no-store' })
+          // Relative URL kullan - Vercel'de daha güvenilir
+      const res = await fetch(`/api/announcements?status=published&category=${encodeURIComponent(category)}&limit=3`, { cache: 'no-store' })
     const json = await res.json()
     const items = json.success ? json.data : []
     return items.filter((x: any) => x.slug !== currentSlug).slice(0, 3)

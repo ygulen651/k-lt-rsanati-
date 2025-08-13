@@ -16,12 +16,8 @@ export const metadata = generatePageSEO({
 
 async function getPressFromAPI() {
   try {
-            // Server-side için environment variable kullan
-      const baseUrl = process.env.VERCEL_URL 
-        ? `https://${process.env.VERCEL_URL}` 
-        : process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
-      
-      const response = await fetch(`${baseUrl}/api/press`, { cache: 'no-store' })
+            // Relative URL kullan - Vercel'de daha güvenilir
+      const response = await fetch(`/api/press`, { cache: 'no-store' })
     if (!response.ok) return []
     const result = await response.json()
     return result.success ? result.data : []
